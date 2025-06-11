@@ -1,15 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, Clock, Shield, CheckCircle, ArrowRight, Zap } from 'lucide-react';
-import ProgressBar from './components/ProgressBar';
-import SkipCard from './components/SkipCard';
-import LoadingSpinner from './components/LoadingSpinner';
-import { useSkipData } from './hooks/useSkipData';
-import './App.css';
+import ProgressBar from './ProgressBar';
+import SkipCard from './SkipCard';
+import LoadingSpinner from './LoadingSpinner';
+import { fetchSkipsByLocation } from '../services/api';
 
-function App() {
-  const { skips, loading, error } = useSkipData('NR32', 'Lowestoft');
+const SkipSelectorRedesign = () => {
+  const [skips, setSkips] = useState([]);
   const [selectedSkip, setSelectedSkip] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState(null);
+
+  useEffect(() => {
+    const loadSkips = async () => {
+      try {
+        setLoading(true);
+        // Try to fetch from real API, fallback to mock data
+        let skipData;
+        try {
+          skipData = await fetchSkipsByLocation('NR32', 'Lowestoft');
+        } catch (apiError) {
+          console.log('Using fallback data due to API error:', apiError);
+          // Fallback mock data
+          skipData = [
+            {"id":17933,"size":4,"hire_period_days":14,"price_before_vat":278,"vat":20,"allowed_on_road":true,"allows_heavy_waste":true},
+            {"id":17934,"size":6,"hire_period_days":14,"price_before_vat":305,"vat":20,"allowed_on_road":true,"allows_heavy_waste":true},
+            {"id":17935,"size":8,"hire_period_days":14,"price_before_vat":375,"vat":20,"allowed_on_road":true,"allows_heavy_waste":true},
+            {"id":17936,"size":10,"hire_period_days":14,"price_before_vat":400,"vat":20,"allowed_on_road":false,"allows_heavy_waste":false},
+            {"id":17937,"size":12,"hire_period_days":14,"price_before_vat":439,"vat":20,"allowed_on_road":false,"allows_heavy_waste":false},
+            {"id":17938,"size":14,"hire_period_days":14,"price_before_vat":470,"vat":20,"allowed_on_road":false,"allows_heavy_waste":false}
+          ];
+        }
+        
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+          setSkips(skipData);
+          setLoading(false);
+        }, 1500);
+      } catch (error) {
+        console.error('Failed to load skips:', error);
+        setLoading(false);
+      }
+    };
+
+    loadSkips();
+  }, []);
 
   const handleSkipSelect = (skipId) => {
     setSelectedSkip(skipId);
@@ -17,8 +52,8 @@ function App() {
 
   const handleContinue = () => {
     if (selectedSkip) {
-      alert(`Proceeding with ${skips.find(s => s.id === selectedSkip)?.size} yard skip!`);
-      // Here you would typically navigate to the next step
+      alert(`Selected skip ID: ${selectedSkip}. Proceeding to next step...`);
+      // Here you would navigate to the next step
     }
   };
 
@@ -31,24 +66,11 @@ function App() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">Choose Your Perfect Skip Size</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">Loading available options...</p>
           </div>
-          <LoadingSpinner />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Skips</h1>
-          <p className="text-gray-600">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Try Again
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <LoadingSpinner key={i} />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -78,7 +100,7 @@ function App() {
               skip={skip} 
               isSelected={selectedSkip === skip.id}
               isHovered={hoveredCard === skip.id}
-              onSelect={() => handleSkipSelect(skip.id)}
+              onSelect={handleSkipSelect}
               onHover={setHoveredCard}
             />
           ))}
@@ -127,6 +149,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
-export default App;
+export default SkipSelectorRedesign;
