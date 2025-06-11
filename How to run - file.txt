@@ -1,0 +1,78 @@
+﻿Skip Selector Redesign
+This repository contains the source code for the "Skip Selector Redesign" React application. This guide will help you set up and run the project locally on your machine for development.
+Table of Contents
+* Prerequisites
+* Installation
+* Running the Application
+* Tailwind CSS Setup (Important for Styling)
+* Troubleshooting
+* Project Overview
+Prerequisites
+Before you begin, ensure you have the following installed on your system:
+* Node.js: Download and install the latest LTS version. This includes npm (Node Package Manager).
+   * To verify your Node.js and npm installations, open your terminal/command prompt and run:
+node -v
+npm -v
+
+   * Git: Download and install Git. This is required to clone the repository.
+Installation
+Follow these steps to get the project installed:
+   1. Clone the repository:
+Open your terminal or command prompt and navigate to the directory where you want to store the project. Then, clone the repository using its URL (replace <repository-url> with the actual URL from GitHub):
+git clone <repository-url>
+
+   2. Navigate into the project directory:
+cd skip-selector-redesign
+
+   3. Install project dependencies:
+This command will download all the necessary packages and libraries required for the project from npm.
+npm install
+
+Running the Application
+Once the dependencies are installed, you can start the development server:
+      1. Start the development server:
+npm start
+
+This command will open the application in your default web browser at http://localhost:3000 (or another available port). The page will reload if you make edits.
+Tailwind CSS Setup (Important for Styling)
+This project uses Tailwind CSS for styling. For the styles to render correctly, Tailwind CSS needs to be properly configured in your local environment. The following files are crucial for Tailwind:
+         * tailwind.config.js: Defines your Tailwind configuration.
+         * postcss.config.js: Used by PostCSS to process Tailwind.
+         * src/index.css (or src/globals.css if used as the main stylesheet): Contains Tailwind's base directives.
+Verification (if styles are not appearing):
+         1. Ensure tailwind.config.js and postcss.config.js exist in the project root.
+         2. Open your primary CSS file (e.g., src/index.css or src/globals.css) and confirm it includes the Tailwind directives at the very top:
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your custom CSS follows here */
+
+         3. Check that tailwind.config.js has the correct content array to scan your source files:
+module.exports = {
+ content: [
+   "./src/**/*.{js,jsx,ts,tsx}",
+ ],
+ // ... rest of config
+}
+
+If you encounter issues with styling, ensure these files are correctly configured. Running npm install should generally handle the necessary installations for Tailwind after cloning.
+Troubleshooting
+            * 'react-scripts' is not recognized:
+This means the project dependencies are not fully installed. Navigate to the project root (skip-selector-redesign) and run npm install. If the issue persists, try:
+rd /s /q node_modules  # On Windows to remove node_modules folder
+del package-lock.json # On Windows to remove package-lock.json file
+npm cache clean --force
+npm install
+npm start
+
+            * Styles not loading / Application looks unstyled:
+As mentioned in the Tailwind CSS Setup section, ensure Tailwind is correctly configured. Also, check your browser's developer tools (F12) Elements and Network tabs to see if CSS files are loading and applying correctly.
+Project Overview
+This is a React application designed for a "Skip Selector" interface, allowing users to choose skip sizes for waste disposal. It utilizes modern React practices with functional components and hooks. Styling is implemented using Tailwind CSS for a utility-first approach.
+The project structure includes:
+               * src/components/: Reusable UI components.
+               * src/hooks/: Custom React hooks for data fetching.
+               * src/styles/: Custom CSS files (globals.css, App.css).
+               * src/App.js: The main application component.
+               * src/index.js: The entry point for the React application.
