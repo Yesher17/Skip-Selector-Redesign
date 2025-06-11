@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/skip-selector-redesign/static/css/main.331434cf.css",
+    "main.js": "/skip-selector-redesign/static/js/main.cf318acf.js",
+    "index.html": "/skip-selector-redesign/index.html",
+    "main.331434cf.css.map": "/skip-selector-redesign/static/css/main.331434cf.css.map",
+    "main.cf318acf.js.map": "/skip-selector-redesign/static/js/main.cf318acf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.331434cf.css",
+    "static/js/main.cf318acf.js"
+  ]
+}
